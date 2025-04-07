@@ -2,7 +2,7 @@ use ndarray::{Array4, Array2, ArrayView3, s};
 use serde::{Deserialize};
 use serde_json::Value;
 use std::fs;
-use image::{io::Reader as ImageReader};
+use image::{io::Reader as ImageReader, ImageFormat};
 
 
 #[derive(Deserialize, Debug)]
@@ -295,7 +295,7 @@ impl Model {
 }
 
 fn load_weights() -> Vec<Weight> {
-    let data = fs::read_to_string("weights-9.json").expect("Unable to read file");
+    let data = fs::read_to_string("weights-new-5.json").expect("Unable to read file");
     serde_json::from_str(&data).expect("Error parsing JSON")
 }
 
@@ -445,7 +445,9 @@ fn load_and_preprocess_image(path: &str) -> Array4<f64> {
     let resized_img = img.resize_exact(128, 128, image::imageops::FilterType::Gaussian);
 
     let resized_img = resized_img.to_rgba8();
-
+    resized_img
+        .save_with_format("resized_output.png", ImageFormat::Png)
+        .expect("Failed to save image");
 
     let mut array = Array4::<f64>::zeros((1, 128, 128, 3)); // Размер: 1 x 128 x 128 x 3 (для модели)
 
@@ -473,26 +475,35 @@ fn main() {
     let image_path = "1002.jpg";
     let image_path = "10006.jpg";
     let image_path = "tabyret.jpg";
-    let image_path = "monkey.jpg";
-    let image_path = "cat-2.jpg";
-    let image_path = "cat-1.jpg";
-    let image_path = "cat-4.png"; // - the photo is not square
-    let image_path = "cat-4-1.png"; // + the photo is square
-    let image_path = "cat-5.png";
-    let image_path = "street.png";
-    let image_path = "flower.png";
+    // let image_path = "monkey.jpg";
+    // let image_path = "cat-2.jpg";
+    // let image_path = "cat-1.jpg";
+    // let image_path = "cat-4.png"; // - the photo is not square
+    // let image_path = "cat-4-1.png"; // + the photo is square
+    // let image_path = "cat-5.png";
+    // let image_path = "street.png";
+    // let image_path = "flower.png";
     let image_path = "fox.png"; // -
-    let image_path = "house.png";
-    let image_path = "cat-6.png";
-    let image_path = "cat-7.png"; // - 
-    let image_path = "cat-8.png"; 
-    let image_path = "cat-9.png"; 
-    let image_path = "car.png"; 
-    let image_path = "cat-10.png"; 
-    let image_path = "cat-11.png"; 
-    let image_path = "cat-12.png"; 
-    let image_path = "cat-13.png"; 
-    let image_path = "cat-14.png"; // It's not a cat: 99.8811018907867% accuracy <- think that's the right answer
+    // let image_path = "house.png";
+    // let image_path = "cat-6.png";
+    // let image_path = "cat-7.png"; // - 
+    // let image_path = "cat-8.png"; 
+    // let image_path = "cat-9.png"; 
+    // let image_path = "car.png"; 
+    // let image_path = "cat-10.png"; 
+    // let image_path = "cat-11.png"; 
+    // let image_path = "cat-12.png"; 
+    // let image_path = "cat-13.png"; 
+    // let image_path = "cats-3.jpg";
+    // let image_path = "cats-a.jpg";
+    // let image_path = "cat-15-2.jpg";
+    // let image_path = "ai-cats.jpg";
+    // let image_path = "ai-cats-2.jpg";
+    // let image_path = "cats.png";
+    // let image_path = "cat-15-4.jpg";
+    // let image_path = "images.jpg";
+    // let image_path = "cat-16.jpg";
+    // let image_path = "cat-14.png"; // It's not a cat: 99.8811018907867% accuracy <- think that's the right answer
 
     println!("Load and preprocess image");
     let input_data = load_and_preprocess_image(&(path_to_images_folder.to_owned()+image_path));
